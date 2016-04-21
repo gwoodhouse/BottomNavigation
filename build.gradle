@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 
 ext {
-    PUBLISH_GROUP_ID = "ca.gcastle.bottomnavigation"
+    PUBLISH_GROUP_ID = "ca.gcastle"
     PUBLISH_ARTIFACT_ID = "BottomNavigation"
     PUBLISH_VERSION = "0.0.1"
 }
