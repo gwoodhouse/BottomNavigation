@@ -1,5 +1,32 @@
 # BottomNavigation
 
+## How to use
+
+Maven
+
+```
+<dependency>
+  <groupId>ca.gcastle</groupId>
+  <artifactId>BottomNavigation</artifactId>
+  <version>1.0.0</version>
+  <type>pom</type>
+</dependency>
+```
+
+Gradle
+
+```
+compile 'ca.gcastle:BottomNavigation:1.0.0'
+```
+
+Ivy
+
+```
+<dependency org='ca.gcastle' name='BottomNavigation' rev='1.0.0'>
+  <artifact name='$AID' ext='pom'></artifact>
+</dependency>
+```
+
 ## Default usage
 ```
 <ca.gcastle.bottomnavigation.view.BottomNavigationView
