@@ -76,7 +76,7 @@ Ivy
 #### [Optional]
 `app:navGrowTabs="false"`
 
-Either "true" or "false, defaults to true. If you don't want the tabs to grow when selected use "false"
+If you don't want the tabs to grow when selected use "false". Either "true" or "false, defaults to true. 
 
 `app:navGrowthModifier="32dp"`
 
@@ -84,7 +84,7 @@ The amount a tab grows when selected. Default value is 64dp. Is ignored if navGr
 
 `app:navShowCircleReveal="false"`
 
-Decide if you want a circular reveal effect on the background colour, or wether to simply switch colours.
+Decide if you want a circular reveal effect on the background colour, or whether to simply switch colours.
 
 ### BottomNavigationTabView
 
