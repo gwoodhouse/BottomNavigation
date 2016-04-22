@@ -28,6 +28,9 @@ Ivy
 ```
 
 ## Default usage
+
+To be placed as the final View in a CoordinatorLayout:
+
 ```
 <ca.gcastle.bottomnavigation.view.BottomNavigationView
             android:id="@+id/bottomBar"
@@ -43,21 +46,24 @@ Ivy
                 app:tabImage="@drawable/icon1"
                 app:tabText="tab1"
                 app:tabColor="#FF0000"/>
-            <ca.gcastle.bottomnavigation.view.BottomNavigationTabView
+
+<ca.gcastle.bottomnavigation.view.BottomNavigationTabView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:id="@+id/tab2"
                 app:tabImage="@drawable/icon2"
                 app:tabText="tab2"
                 app:tabColor="#00FF00"/>
-            <ca.gcastle.bottomnavigation.view.BottomNavigationTabView
+
+<ca.gcastle.bottomnavigation.view.BottomNavigationTabView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:id="@+id/tab3"
                 app:tabImage="@drawable/icon3"
                 app:tabText="tab3"
                 app:tabColor="#0000FF/>
-        </ca.gcastle.bottomnavigation.view.BottomNavigationView>
+
+</ca.gcastle.bottomnavigation.view.BottomNavigationView>
 ```
 
 ## Optional parameters
