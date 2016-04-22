@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="red500">#F44336</color>
+    <declare-styleable name="bottomNav"><attr format="reference|boolean" name="navGrowTabs"/><attr format="reference|dimension" name="navGrowthModifier"/><attr format="reference|boolean" name="navShowCircleReveal"/></declare-styleable>
+    <declare-styleable name="bottomTab"><attr format="reference" name="tabImage"/><attr format="reference|string" name="tabText"/><attr format="reference|color" name="tabColor"/><attr format="reference|color" name="textColor"/><attr format="reference|boolean" name="alwaysShowText"/><attr format="reference|float" name="unselectedAlpha"/></declare-styleable>
+</resources>
