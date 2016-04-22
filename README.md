@@ -1,4 +1,4 @@
-# BottomNavigation
+# Bottom Navigation
 
 ## How to use
 
@@ -34,10 +34,7 @@ Ivy
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:layout_gravity="bottom"
-            app:layout_behavior="ca.gcastle.bottomnavigation.behaviour.BottomNavigationBehavior"
-            app:navGrowTabs="false"
-            app:navGrowthModifier="32dp"
-            app:navShowCircleReveal="false">
+            app:layout_behavior="ca.gcastle.bottomnavigation.behaviour.BottomNavigationBehavior">
 
             <ca.gcastle.bottomnavigation.view.BottomNavigationTabView
                 android:layout_width="wrap_content"
@@ -45,27 +42,21 @@ Ivy
                 android:id="@+id/tab1"
                 app:tabImage="@drawable/icon1"
                 app:tabText="tab1"
-                app:tabColor="#FF0000"
-                app:alwaysShowText="true"
-                app:unselectedAlpha="0.2"/>
-
+                app:tabColor="#FF0000"/>
             <ca.gcastle.bottomnavigation.view.BottomNavigationTabView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:id="@+id/tab2"
                 app:tabImage="@drawable/icon2"
                 app:tabText="tab2"
-                app:tabColor="#00FF00"
-                app:unselectedAlpha="0.2"/>
-
+                app:tabColor="#00FF00"/>
             <ca.gcastle.bottomnavigation.view.BottomNavigationTabView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:id="@+id/tab3"
                 app:tabImage="@drawable/icon3"
                 app:tabText="tab3"
-                app:tabColor="#0000FF
-                app:unselectedAlpha="0.2"/>
+                app:tabColor="#0000FF/>
         </ca.gcastle.bottomnavigation.view.BottomNavigationView>
 ```
 
@@ -87,6 +78,8 @@ The amount a tab grows when selected. Default value is 64dp. Is ignored if navGr
 Decide if you want a circular reveal effect on the background colour, or whether to simply switch colours.
 
 ### BottomNavigationTabView
+
+#### Required
 
 `app:tabImage="@drawable/icon1"`
 
