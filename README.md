@@ -1,31 +1,12 @@
 # Bottom Navigation
 
-## How to use
+An implementation of the "Bottom Navigation" component from Google Material Design spec.
 
-Maven
+Please look <a href="http://www.google.com/design/spec/components/bottom-navigation.html">here</a> to view the full component specification.
 
-```
-<dependency>
-  <groupId>ca.gcastle</groupId>
-  <artifactId>BottomNavigation</artifactId>
-  <version>1.0.0</version>
-  <type>pom</type>
-</dependency>
-```
+This library does not implement the "Left Navigation" as per the Tablet specification.
 
-Gradle
-
-```
-compile 'ca.gcastle:BottomNavigation:1.0.0'
-```
-
-Ivy
-
-```
-<dependency org='ca.gcastle' name='BottomNavigation' rev='1.0.0'>
-  <artifact name='$AID' ext='pom'></artifact>
-</dependency>
-```
+This library does not implement text/icon tinting as of yet.
 
 ## Default usage
 
@@ -112,6 +93,33 @@ Ensure text is always visible. Defaults to false.
 `app:unselectedAlpha="0.2"`
 
 Customise the opacity of unselected items. Between 0 and 1. Defaults to 0.8
+
+## How to use
+
+Maven
+
+```
+<dependency>
+  <groupId>ca.gcastle</groupId>
+  <artifactId>BottomNavigation</artifactId>
+  <version>1.0.0</version>
+  <type>pom</type>
+</dependency>
+```
+
+Gradle
+
+```
+compile 'ca.gcastle:BottomNavigation:1.0.0'
+```
+
+Ivy
+
+```
+<dependency org='ca.gcastle' name='BottomNavigation' rev='1.0.0'>
+  <artifact name='$AID' ext='pom'></artifact>
+</dependency>
+```
 
 ## Thanks
 
