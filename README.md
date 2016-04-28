@@ -123,7 +123,11 @@ Ivy
 
 ## Thanks
 
-Thanks go to Adam McNeilly for his sample application - View his other contributions to the open source community here: <a href="http://adammcneilly.com/100days/">http://adammcneilly.com/100days/</a>
+Thanks go to:
+
+ * Adam McNeilly for his sample application - View his other contributions to the open source community here: <a href="http://adammcneilly.com/100days/">http://adammcneilly.com/100days/</a>
+ * Eric Cugota for his documentation on how to publish a library to jcenter which is available <a href="http://room-15.github.io/blog/2015/11/05/How-to-publish-a-library-to-jcenter/">here</a>
+ * The members of Android/room-15 on StackOverflow for their support critiquing code and offering support.
 
 ## License
 
