@@ -47,9 +47,7 @@ public class BottomNavigationTabView extends FrameLayout {
         mDetector = new GestureDetector(new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onSingleTapUp(MotionEvent e) {
-                if(mClickListener != null) {
-                    mClickListener.onClick(BottomNavigationTabView.this);
-                }
+                onClick();
                 return false;
             }
         });
@@ -95,6 +93,9 @@ public class BottomNavigationTabView extends FrameLayout {
         return mTextView.getMeasuredHeight();
     }
 
+    /*
+     *  Called by the container to initialise the View to the "Selected" state
+     */
     protected void setSelected() {
         mTextViewHeight = getTextViewHeight();
         mImageViewTop = m6dp;
@@ -102,17 +103,10 @@ public class BottomNavigationTabView extends FrameLayout {
     }
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }
-
-    @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int width = r - l;
-        int height = b - t;
 
         int imageViewLeft   = (width - mImageView.getMeasuredWidth()) / 2;
-        //int imageViewTop    = m16dp - mTextViewHeight;
         int imageViewRight  = imageViewLeft + mImageView.getMeasuredWidth();
         int imageViewBottom = mImageViewTop + mImageView.getMeasuredHeight();
 
@@ -135,14 +129,6 @@ public class BottomNavigationTabView extends FrameLayout {
                          textViewTop + mTextViewHeight);
     }
 
-    public int getTabView() {
-        return R.layout.view_bottomnavigation_tab;
-    }
-
-    public int getColor() {
-        return mColor;
-    }
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         mDetector.onTouchEvent(event);
@@ -154,8 +140,44 @@ public class BottomNavigationTabView extends FrameLayout {
         mClickListener = l;
     }
 
+    /*
+     * Returns the layout to use for the tab. Can be overriden to return a custom view - the custom
+     * view requires the following calls to initialise as not null:
+     *
+     *          (ImageView) findViewById(R.id.imageView);
+     *          (TextView)  findViewById(R.id.badge);
+     *          (TextView)  findViewById(R.id.textView);
+     *
+     * The views layout() calls will be manipulated in order to animate them into position
+     *
+     * @return  The resid of the layout to use
+     */
+    public int getTabView() {
+        return R.layout.view_bottomnavigation_tab;
+    }
+
+    /*
+     * Returns the colour value for the tab as set in the tabColour xml attribute
+     */
+    public int getColor() {
+        return mColor;
+    }
+
+    /*
+     *  Called from the container when "animateToChild" is called with a true value
+     */
+    protected void onClick() {
+        if(mClickListener != null) {
+            mClickListener.onClick(this);
+        }
+    }
+
+    /*
+     * Used to display a badge value on the tab. If this value is set to 0 the badge will be set to
+     * View.GONE
+     */
     public void setCount(int count) {
-        if(count == 0) {
+        if(count < 0) {
             mBadge.setVisibility(View.GONE);
         } else {
             mBadge.setText(count);
@@ -163,7 +185,13 @@ public class BottomNavigationTabView extends FrameLayout {
         }
     }
 
-    public Animator getAnimatorSet(boolean maximise) {
+    /*
+     * Called by the container to return the animations the Tab wants to perform when selected.
+     *
+     * @return  This animator is added to an AnimatorSet in the parent View and animated with
+     *          the parents animation.
+     */
+    protected Animator getAnimatorSet(boolean maximise) {
         AnimatorSet set = new AnimatorSet();
 
         ValueAnimator textSizeAnimator = null;

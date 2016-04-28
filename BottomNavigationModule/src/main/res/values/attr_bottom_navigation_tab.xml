@@ -4,6 +4,8 @@
         <attr name="navGrowTabs" format="reference|boolean"/>
         <attr name="navGrowthModifier" format="reference|dimension"/>
         <attr name="navShowCircleReveal" format="reference|boolean"/>
+        <attr name="navInitiallySelectedChild" format="reference|integer"/>
+        <attr name="navExpandAnimationTime" format="reference|integer"/>
     </declare-styleable>
 
     <declare-styleable name="bottomTab">

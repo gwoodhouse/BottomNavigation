@@ -22,97 +22,122 @@ import ca.gcastle.bottomnavigation.R;
  */
 public class BottomNavigationView extends FrameLayout {
 
+    // Used to intercept touch events in order to animate reveal effect
     private GestureDetector mDetector;
+
+    // Used to paint reveal effect
     private Paint           mRadiusPaint;
 
     // Customisable Values
-    private boolean growTabs;
-    private int tabGrowthModifier;
-    private boolean showReveal;
+    private boolean mGrowTabs;
+    private boolean mShowReveal;
+    private int     mInitiallySelectedChild;
+    private int     mTabGrowthModifier;
+    private int     mExpandAnimationTime;
 
-    private int unselectedChildSize;
+    // Helper value, contains width of unselected child views.
+    private int mUnselectedChildSize;
 
+    // Flag to indicate wether an animation is currently taking place.
     private boolean currentlyAnimating = false;
+
+    // Changed by RadiusAnimationListener and read in onDraw for reveal effect
     private float radiusAnimationValue = 0;
 
-    // Currently selected and next to animate indeces
+    // Currently selected child
     private int currentlySelectedChild = 0;
-    private int itemToOpenAfterThisAnimation = -1;
 
-    // Ripple centers (both current and next)
+    // Reveal centers (both current and next)
     private int cx;
     private int cy;
 
+    // Next to select child and the touch centers for the reveal effect.
+    private int itemToOpenAfterThisAnimation = -1;
     private int cxAfterThisAnimation = 0;
     private int cyAfterThisAnimation = 0;
 
+    // Used to hold child widths, pushed to children in onLayout, changed
     private ArrayList<Integer> childWidths = new ArrayList<>();
 
-    private static final int INITIALLY_SELECTED_CHILD = 0;
-    private static final int EXPAND_TIME = 200;
 
     public BottomNavigationView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mDetector = new GestureDetector(context, listener);
+
+        mDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                int widthPerChild = getWidth() / getChildCount();
+                int childClicked = (int) (e.getX() / widthPerChild);
+
+                animateClick(childClicked, (int) e.getX(), (int) e.getY());
+
+                return true;
+            }
+        });
+
         mRadiusPaint = new Paint();
 
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.bottomNav);
 
-        growTabs   = a.getBoolean(R.styleable.bottomNav_navGrowTabs, true);
-        showReveal = a.getBoolean(R.styleable.bottomNav_navShowCircleReveal, true);
-        if(growTabs) {
-            tabGrowthModifier = (int) a.getDimension(R.styleable.bottomNav_navGrowthModifier, (int) BottomNavigationUtils.getPixelsFromDP(getContext(), 64));
-        } else {
-            tabGrowthModifier = 0;
-        }
+        mGrowTabs               = a.getBoolean(R.styleable.bottomNav_navGrowTabs, true);
+        mShowReveal             = a.getBoolean(R.styleable.bottomNav_navShowCircleReveal, true);
+        mInitiallySelectedChild = a.getInt(R.styleable.bottomNav_navInitiallySelectedChild, 0);
+        mTabGrowthModifier      = (int) a.getDimension(R.styleable.bottomNav_navGrowthModifier,
+                                    (int) BottomNavigationUtils.getPixelsFromDP(getContext(), 64));
+        mExpandAnimationTime    = a.getInt(R.styleable.bottomNav_navInitiallySelectedChild, 200);
 
         a.recycle();
+
+        if(mGrowTabs) {
+            mTabGrowthModifier = 0;
+        }
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        for(int i  = 0; i < getChildCount(); i++) {
-            if(!(getChildAt(i) instanceof BottomNavigationTabView)) {
-                throw new ClassCastException(getClass().getSimpleName() + " requires only " + BottomNavigationTabView.class.getSimpleName());
-            }
-            if(i == INITIALLY_SELECTED_CHILD) {
-                BottomNavigationTabView selectedChild = (BottomNavigationTabView) getChildAt(i);
-                selectedChild.setSelected();
-                setBackgroundColor(selectedChild.getColor());
+
+        if(getChildCount() <= 1) {
+            throw new IllegalArgumentException(getClass().getSimpleName() +
+                   " requires at least two children");
+        }
+
+        if(mInitiallySelectedChild >= getChildCount()) {
+            throw new IllegalArgumentException(getClass().getSimpleName() +
+                    " has too few children for an initial child index selection of " + mInitiallySelectedChild);
+        }
+
+        for (int i = 0; i < getChildCount(); i++) {
+            if (!(getChildAt(i) instanceof BottomNavigationTabView)) {
+                throw new ClassCastException(getClass().getSimpleName() +
+                    " requires only " + BottomNavigationTabView.class.getSimpleName());
             }
         }
 
-        if(getChildCount() < 2) {
-            throw new IllegalArgumentException(getClass().getSimpleName() + " requires at least two children");
-        }
+        setSelectedChild(mInitiallySelectedChild);
     }
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int width = r - l;
         int height = b - t;
-        setChildSizes(changed, width);
+        if(changed) {
+            childWidths.clear();
+
+            mUnselectedChildSize = (width - mTabGrowthModifier) / getChildCount();
+            for(int i = 0; i < getChildCount(); i++) {
+                if(i == mInitiallySelectedChild) {
+                    childWidths.add(mUnselectedChildSize + mTabGrowthModifier);
+                } else {
+                    childWidths.add(mUnselectedChildSize);
+                }
+            }
+        }
         int left = 0;
         for(int i = 0; i < getChildCount(); i++) {
             int childWidth = childWidths.get(i);
             getChildAt(i).layout(left, 0, left + childWidth, height);
             left += childWidth;
-        }
-    }
-
-    private void setChildSizes(boolean changed, int w) {
-        if(changed) {
-            childWidths.clear();
-            unselectedChildSize = (w - tabGrowthModifier) / getChildCount();
-            //Log.e(BottomNavigationView.class.getSimpleName(), "Screen Width: " + w + ", Child Size: " + unselectedChildSize + ", ExpandedModifier: " + tabGrowthModifier);
-            for(int i = 0; i < getChildCount(); i++) {
-                if(i == INITIALLY_SELECTED_CHILD) {
-                    childWidths.add(unselectedChildSize + tabGrowthModifier);
-                } else {
-                    childWidths.add(unselectedChildSize);
-                }
-            }
         }
     }
 
@@ -122,26 +147,56 @@ public class BottomNavigationView extends FrameLayout {
         return true;
     }
 
-    GestureDetector.SimpleOnGestureListener listener = new GestureDetector.SimpleOnGestureListener() {
-        @Override
-        public boolean onSingleTapUp(MotionEvent e) {
-            int widthPerChild = getWidth() / getChildCount();
-            int childClicked = (int) (e.getX() / widthPerChild);
+    /*
+     * Can be called to instantly select the current child. Must not be called mid-animation.
+     */
+    public void setSelectedChild(int selectedChildIndex) {
+        BottomNavigationTabView selectedChild =
+                (BottomNavigationTabView) getChildAt(selectedChildIndex);
+        selectedChild.setSelected();
+        setBackgroundColor(selectedChild.getColor());
+    }
 
-            if(currentlyAnimating) {
-                itemToOpenAfterThisAnimation = childClicked;
-                cxAfterThisAnimation = (int) e.getX();
-                cyAfterThisAnimation = (int) e.getY();
-            } else {
-                if(childClicked != currentlySelectedChild) {
-                    cx = (int) e.getX();
-                    cy = (int) e.getY();
-                    animateChildToSelected(childClicked);
-                }
-            }
-            return true;
+    /*
+     * Can be used to start an animation (or queue an animation) from the center of the selected
+     * child
+     *
+     * @param child     The index of the child you wish to animate to
+     * @param activateChildOnClickListener boolean value to indicate whether the child tabs
+     *                                     onClickListener should fire
+     */
+    public void animateToChild(int child, boolean activateChildOnClickListener) {
+        if(child >= getChildCount()) {
+            throw new IllegalArgumentException(
+                    "Cannot animate to child index " + child + ". " + getClass().getSimpleName() +
+                            " only has " + getChildCount() + " children");
         }
-    };
+
+        if(activateChildOnClickListener) {
+            ((BottomNavigationTabView) getChildAt(child)).onClick();
+        }
+
+        int widthPerChild = getWidth() / getChildCount();
+        int x = widthPerChild * child + (widthPerChild / 2);
+        int y = getHeight() / 2;
+
+        animateClick(child, x, y);
+    }
+
+    private void animateClick(int child, int x, int y) {
+        if(currentlyAnimating) {
+            itemToOpenAfterThisAnimation = child;
+            cxAfterThisAnimation = x;
+            cyAfterThisAnimation = y;
+        } else {
+            if(child != currentlySelectedChild) {
+                cx = x;
+                cy = y;
+                animateChildToSelected(child);
+            }
+        }
+    }
+
 
     private void animateChildToSelected(final int child) {
         currentlyAnimating = true;
@@ -149,16 +204,18 @@ public class BottomNavigationView extends FrameLayout {
 
         ValueAnimator expandAnimator = null;
 
-        if(growTabs) {
-            expandAnimator = ValueAnimator.ofInt(0, tabGrowthModifier);
+        if(mGrowTabs) {
+            expandAnimator = ValueAnimator.ofInt(0, mTabGrowthModifier);
             expandAnimator.addUpdateListener(new ViewWidthAnimator(child, currentlySelectedChild));
         }
 
-        Animator maximiseAnimators = ((BottomNavigationTabView) getChildAt(child)).getAnimatorSet(true);
-        Animator minimiseAnimators = ((BottomNavigationTabView) getChildAt(currentlySelectedChild)).getAnimatorSet(false);
+        Animator maximiseAnimators = ((BottomNavigationTabView) getChildAt(child))
+                .getAnimatorSet(true);
+        Animator minimiseAnimators = ((BottomNavigationTabView) getChildAt(currentlySelectedChild))
+                .getAnimatorSet(false);
 
         ValueAnimator radiusAnimator = null;
-        if(showReveal) {
+        if(mShowReveal) {
             radiusAnimator = ValueAnimator.ofFloat(0, getWidth());
             radiusAnimator.addUpdateListener(new RadiusAnimationListener());
         } else {
@@ -175,7 +232,7 @@ public class BottomNavigationView extends FrameLayout {
         if(animations.size() > 0) {
             AnimatorSet set = new AnimatorSet();
             set.addListener(new EndAnimationListener());
-            set.setDuration(EXPAND_TIME);
+            set.setDuration(mExpandAnimationTime);
             set.playTogether(animations);
             set.start();
         }
@@ -223,8 +280,11 @@ public class BottomNavigationView extends FrameLayout {
 
         @Override
         public void onAnimationUpdate(ValueAnimator animation) {
-            childWidths.set(childIndexToExpand, unselectedChildSize + (Integer) animation.getAnimatedValue());
-            childWidths.set(childIndexToMinimise, unselectedChildSize + (tabGrowthModifier - (Integer) animation.getAnimatedValue()));
+            childWidths.set(childIndexToExpand,
+                            mUnselectedChildSize + (Integer) animation.getAnimatedValue());
+            childWidths.set(childIndexToMinimise,
+                            mUnselectedChildSize +
+                                    (mTabGrowthModifier - (Integer) animation.getAnimatedValue()));
             requestLayout();
         }
     }
@@ -233,7 +293,7 @@ public class BottomNavigationView extends FrameLayout {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if(currentlyAnimating) {
+        if(radiusAnimationValue > 0) {
             canvas.drawCircle(cx, cy, radiusAnimationValue, mRadiusPaint);
         }
     }
