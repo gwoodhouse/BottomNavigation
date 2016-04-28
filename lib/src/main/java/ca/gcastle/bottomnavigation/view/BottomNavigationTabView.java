@@ -63,7 +63,7 @@ public class BottomNavigationTabView extends FrameLayout {
         Drawable imageResId  = a.getDrawable(R.styleable.bottomTab_tabImage);
         mColor               = a.getColor(R.styleable.bottomTab_tabColor, 0x00000000);
         int textColor        = a.getColor(R.styleable.bottomTab_textColor, 0xFFFFFFFF);
-        alwaysShowText       = a.getBoolean(R.styleable.bottomTab_alwaysShowText, true);
+        alwaysShowText       = a.getBoolean(R.styleable.bottomTab_alwaysShowText, false);
         unselectedAlpha      = a.getFloat(R.styleable.bottomTab_unselectedAlpha, 0.8f);
 
         a.recycle();

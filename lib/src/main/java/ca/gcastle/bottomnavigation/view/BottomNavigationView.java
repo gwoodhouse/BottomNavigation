@@ -77,7 +77,9 @@ public class BottomNavigationView extends FrameLayout {
                 throw new ClassCastException(getClass().getSimpleName() + " requires only " + BottomNavigationTabView.class.getSimpleName());
             }
             if(i == INITIALLY_SELECTED_CHILD) {
-                ((BottomNavigationTabView)getChildAt(i)).setSelected();
+                BottomNavigationTabView selectedChild = (BottomNavigationTabView) getChildAt(i);
+                selectedChild.setSelected();
+                setBackgroundColor(selectedChild.getColor());
             }
         }
 
