@@ -113,10 +113,9 @@ Ensure text is always visible. Defaults to false.
 
 Customise the opacity of unselected items. Between 0 and 1. Defaults to 0.8
 
-## Sample
-Below is a sample of the tab view in action:
+## Thanks
 
-<img src="http://i.imgur.com/VjwUVvj.gif" width="400" height="640"/>
+Thanks go to Adam McNeilly for his sample applications - View his work other contribution to the open source community here: <a href="http://adammcneilly.com/100days/">http://adammcneilly.com/100days/</a>
 
 ## License
 
