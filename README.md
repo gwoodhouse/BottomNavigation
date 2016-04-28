@@ -115,7 +115,7 @@ Customise the opacity of unselected items. Between 0 and 1. Defaults to 0.8
 
 ## Thanks
 
-Thanks go to Adam McNeilly for his sample applications - View his work other contribution to the open source community here: <a href="http://adammcneilly.com/100days/">http://adammcneilly.com/100days/</a>
+Thanks go to Adam McNeilly for his sample applications - View his other contributions to the open source community here: <a href="http://adammcneilly.com/100days/">http://adammcneilly.com/100days/</a>
 
 ## License
 
