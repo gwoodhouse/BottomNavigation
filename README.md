@@ -112,7 +112,7 @@ Customise the opacity of unselected items. Between 0 and 1. Defaults to 0.8
 ## Sample
 Below is a sample of the tab view in action:
 
-<img src="http://i.imgur.com/VjwUVvj.gifv" width="400" height="640"/>
+<img src="http://i.imgur.com/VjwUVvj.gif" width="400" height="640"/>
 
 ## License
 
