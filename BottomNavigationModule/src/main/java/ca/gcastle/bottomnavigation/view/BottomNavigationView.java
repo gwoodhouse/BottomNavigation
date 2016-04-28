@@ -83,12 +83,12 @@ public class BottomNavigationView extends FrameLayout {
         mShowReveal             = a.getBoolean(R.styleable.bottomNav_navShowCircleReveal, true);
         mInitiallySelectedChild = a.getInt(R.styleable.bottomNav_navInitiallySelectedChild, 0);
         mTabGrowthModifier      = (int) a.getDimension(R.styleable.bottomNav_navGrowthModifier,
-                                    (int) BottomNavigationUtils.getPixelsFromDP(getContext(), 64));
+                                    BottomNavigationUtils.getPixelsFromDP(getContext(), 64));
         mExpandAnimationTime    = a.getInt(R.styleable.bottomNav_navInitiallySelectedChild, 200);
 
         a.recycle();
 
-        if(mGrowTabs) {
+        if(!mGrowTabs) {
             mTabGrowthModifier = 0;
         }
     }
