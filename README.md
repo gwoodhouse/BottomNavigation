@@ -33,38 +33,42 @@ To be placed as the final View in a CoordinatorLayout:
 
 ```
 <ca.gcastle.bottomnavigation.view.BottomNavigationView
-            android:id="@+id/bottomBar"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_gravity="bottom"
-            app:layout_behavior="ca.gcastle.bottomnavigation.behaviour.BottomNavigationBehavior">
+    android:id="@+id/bottomBar"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:layout_gravity="bottom"
+    app:layout_behavior="ca.gcastle.bottomnavigation.behaviour.BottomNavigationBehavior">
 
-            <ca.gcastle.bottomnavigation.view.BottomNavigationTabView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/tab1"
-                app:tabImage="@drawable/icon1"
-                app:tabText="tab1"
-                app:tabColor="#FF0000"/>
+    <ca.gcastle.bottomnavigation.view.BottomNavigationTabView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/tab1"
+        app:tabImage="@drawable/ic_home_white_24dp"
+        app:tabText="tab1"
+        app:tabColor="@color/colorPrimary"/>
 
-<ca.gcastle.bottomnavigation.view.BottomNavigationTabView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/tab2"
-                app:tabImage="@drawable/icon2"
-                app:tabText="tab2"
-                app:tabColor="#00FF00"/>
+    <ca.gcastle.bottomnavigation.view.BottomNavigationTabView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/tab2"
+        app:tabImage="@drawable/ic_search_white_24dp"
+        app:tabText="tab2"
+        app:tabColor="@color/colorAccent"/>
 
-<ca.gcastle.bottomnavigation.view.BottomNavigationTabView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/tab3"
-                app:tabImage="@drawable/icon3"
-                app:tabText="tab3"
-                app:tabColor="#0000FF/>
+    <ca.gcastle.bottomnavigation.view.BottomNavigationTabView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/tab3"
+        app:tabImage="@drawable/ic_help_white_24dp"
+        app:tabText="tab3"
+        app:tabColor="#00BCD4"/>
 
 </ca.gcastle.bottomnavigation.view.BottomNavigationView>
 ```
+
+The above implementation gives the following behaviour:
+
+<img src="https://raw.githubusercontent.com/gwoodhouse/BottomNavigation/master/demo1.gif"/>
 
 ## Optional parameters
 
