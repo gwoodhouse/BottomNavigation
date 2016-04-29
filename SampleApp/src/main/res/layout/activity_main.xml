@@ -6,14 +6,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="ca.gcastle.bottomnavigation.sample.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        android:layout_margin="16dp"/>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
     <ca.gcastle.bottomnavigation.view.BottomNavigationView
-        android:id="@+id/bottomBar"
+        android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_gravity="bottom"
@@ -22,25 +21,25 @@
         <ca.gcastle.bottomnavigation.view.BottomNavigationTabView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/tab1"
+            android:id="@+id/home"
             app:tabImage="@drawable/ic_home_white_24dp"
-            app:tabText="tab1"
+            app:tabText="Home"
             app:tabColor="@color/colorPrimary"/>
 
         <ca.gcastle.bottomnavigation.view.BottomNavigationTabView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/tab2"
+            android:id="@+id/search"
             app:tabImage="@drawable/ic_search_white_24dp"
-            app:tabText="tab2"
+            app:tabText="Search"
             app:tabColor="@color/colorAccent"/>
 
         <ca.gcastle.bottomnavigation.view.BottomNavigationTabView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/tab3"
+            android:id="@+id/help"
             app:tabImage="@drawable/ic_help_white_24dp"
-            app:tabText="tab3"
+            app:tabText="Help"
             app:tabColor="#00BCD4"/>
 
     </ca.gcastle.bottomnavigation.view.BottomNavigationView>
