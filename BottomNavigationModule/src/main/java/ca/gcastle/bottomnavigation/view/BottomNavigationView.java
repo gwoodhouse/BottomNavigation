@@ -3,12 +3,16 @@ package ca.gcastle.bottomnavigation.view;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
@@ -94,7 +98,7 @@ public class BottomNavigationView extends FrameLayout {
         mInitiallySelectedChild = a.getInt(R.styleable.bottomNav_navInitiallySelectedChild, 0);
         mTabGrowthModifier      = (int) a.getDimension(R.styleable.bottomNav_navGrowthModifier,
                                     BottomNavigationUtils.getPixelsFromDP(getContext(), 64));
-        mExpandAnimationTime    = a.getInt(R.styleable.bottomNav_navInitiallySelectedChild, 200);
+        mExpandAnimationTime    = a.getInt(R.styleable.bottomNav_navInitiallySelectedChild, getResources().getInteger(android.R.integer.config_shortAnimTime));
 
         a.recycle();
 
@@ -126,6 +130,48 @@ public class BottomNavigationView extends FrameLayout {
 
         setSelectedChild(mInitiallySelectedChild);
     }
+//
+//    @Override
+//    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+//
+//        int desiredWidth = 100;
+//        int desiredHeight = 100;
+//
+//        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+//        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+//        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+//        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+//
+//        int width;
+//        int height;
+//
+//        //Measure Width
+//        if (widthMode == MeasureSpec.EXACTLY) {
+//            //Must be this size
+//            width = widthSize;
+//        } else if (widthMode == MeasureSpec.AT_MOST) {
+//            //Can't be bigger than...
+//            width = Math.min(desiredWidth, widthSize);
+//        } else {
+//            //Be whatever you want
+//            width = desiredWidth;
+//        }
+//
+//        //Measure Height
+//        if (heightMode == MeasureSpec.EXACTLY) {
+//            //Must be this size
+//            height = heightSize;
+//        } else if (heightMode == MeasureSpec.AT_MOST) {
+//            //Can't be bigger than...
+//            height = Math.min(desiredHeight, heightSize);
+//        } else {
+//            //Be whatever you want
+//            height = desiredHeight;
+//        }
+//
+//        //MUST CALL THIS
+//        setMeasuredDimension(width, height);
+//    }
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
@@ -310,5 +356,62 @@ public class BottomNavigationView extends FrameLayout {
         if(radiusAnimationValue > 0) {
             canvas.drawCircle(cx, cy, radiusAnimationValue, mRadiusPaint);
         }
+    }
+
+    protected boolean shouldFitSystemWindow() {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            return isTranslucentStatusbarEnabled() && hasSoftKeys() && getNavigationBarHeight() > 0;
+        } else {
+            return false;
+        }
+    }
+
+    protected boolean isTranslucentStatusbarEnabled() {
+        int id = getResources().getIdentifier("config_enableTranslucentDecor", "bool", "android");
+        if (id == 0) {
+            return false;
+        } else {
+            return getResources().getBoolean(id);
+        }
+    }
+
+    // http://stackoverflow.com/a/14871974/726954
+    protected boolean hasSoftKeys(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1){
+            Display d = ((Activity)getContext()).getWindowManager().getDefaultDisplay();
+
+            DisplayMetrics realDisplayMetrics = new DisplayMetrics();
+            d.getRealMetrics(realDisplayMetrics);
+
+            int realHeight = realDisplayMetrics.heightPixels;
+            int realWidth = realDisplayMetrics.widthPixels;
+
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            d.getMetrics(displayMetrics);
+
+            int displayHeight = displayMetrics.heightPixels;
+            int displayWidth = displayMetrics.widthPixels;
+
+            return (realWidth - displayWidth) > 0 || (realHeight - displayHeight) > 0;
+        }
+
+        // for the sake of checking if we're using transparent navigation bar
+        return false;
+    }
+
+    protected int getNavigationBarHeight() {
+        int id;
+
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            id = getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+        } else {
+            id = getResources().getIdentifier("navigation_bar_height_landscape", "dimen", "android");
+        }
+
+        if (id > 0) {
+            return getResources().getDimensionPixelSize(id);
+        }
+
+        return 0;
     }
 }

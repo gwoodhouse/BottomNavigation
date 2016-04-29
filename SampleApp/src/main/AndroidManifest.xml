@@ -8,14 +8,17 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
-            android:label="Bottom Navigation Sample">
+        <activity android:name=".ChooseImplementationActivity"
+            android:label="Choose Implementation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".ViewPagerActivity" android:label="ViewPager Implementation" android:theme="@style/AppTheme"/>
+        <activity android:name=".CrossFadeActivity" android:label="Crossfade Implementation" android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>
