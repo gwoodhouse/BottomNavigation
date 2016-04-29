@@ -8,6 +8,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
@@ -16,8 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.gcastle.bottomnavigation.R;
+import ca.gcastle.bottomnavigation.listeners.OnChildClickedListener;
 
 /**
+ * The main View of this library.
+ *
  * Created by graeme.castle on 12/04/2016.
  */
 public class BottomNavigationView extends FrameLayout {
@@ -59,6 +63,8 @@ public class BottomNavigationView extends FrameLayout {
     // Used to hold child widths, pushed to children in onLayout, changed
     private ArrayList<Integer> childWidths = new ArrayList<>();
 
+    // Listener for when a child is clicked so that the client can handle them.
+    private OnChildClickedListener onChildClickedListener;
 
     public BottomNavigationView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -68,6 +74,10 @@ public class BottomNavigationView extends FrameLayout {
             public boolean onSingleTapUp(MotionEvent e) {
                 int widthPerChild = getWidth() / getChildCount();
                 int childClicked = (int) (e.getX() / widthPerChild);
+
+                if(onChildClickedListener != null) {
+                    onChildClickedListener.onChildClicked(childClicked);
+                }
 
                 animateClick(childClicked, (int) e.getX(), (int) e.getY());
 
@@ -145,6 +155,10 @@ public class BottomNavigationView extends FrameLayout {
     public boolean onTouchEvent(MotionEvent event) {
         mDetector.onTouchEvent(event);
         return true;
+    }
+
+    public void setOnChildClickedListener(OnChildClickedListener listener) {
+        this.onChildClickedListener = listener;
     }
 
     /*
